@@ -3,8 +3,18 @@ import logging
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
-
-from .const import DOMAIN, CONF_API_KEY, CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL, CONF_BUS_NUMBER, CONF_STOP, CONF_DIRECTION, LINE_API_URL, DIRECTIONS_API_URL, ARRETS_API_URL
+from .const import (
+    DOMAIN, 
+    CONF_API_KEY, 
+    CONF_UPDATE_INTERVAL, 
+    DEFAULT_UPDATE_INTERVAL, 
+    CONF_BUS_NUMBER, 
+    CONF_STOP, 
+    CONF_DIRECTION, 
+    LINE_API_URL, 
+    DIRECTIONS_API_URL, 
+    ARRETS_API_URL
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -104,7 +114,8 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             self._user_data.update(user_input)
-            title = f"{self._user_data[CONF_BUS_NUMBER]} - {self._user_data[CONF_STOP]} → {self._user_data['direction_arrival_stop']}"
+            title = f"{self._user_data[CONF_BUS_NUMBER]} - {self._user_data[CONF_STOP]} → \
+                {self._user_data['direction_arrival_stop']}"
             return self.async_create_entry(title=title, data=self._user_data)
 
         return self.async_show_form(

@@ -20,8 +20,10 @@ async def async_setup_entry(
     coordinator: StarCoordinator = entry.runtime_data.coordinator
 
     entities = [
-        StarSensor(coordinator, index=0, name=f"{coordinator.bus_number} → {coordinator.direction} - Prochain départ"),
-        StarSensor(coordinator, index=1, name=f"{coordinator.bus_number} → {coordinator.direction} - Deuxième départ"),
+        StarSensor(coordinator, index=0, name=f"{coordinator.bus_number} → {coordinator.direction} \
+                   - Prochain départ"),
+        StarSensor(coordinator, index=1, name=f"{coordinator.bus_number} → {coordinator.direction} \
+                   - Deuxième départ"),
     ]
 
     async_add_entities(entities)

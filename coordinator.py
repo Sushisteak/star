@@ -3,7 +3,15 @@ import aiohttp
 import async_timeout
 from datetime import timedelta
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from .const import DOMAIN, CONF_API_KEY, CONF_UPDATE_INTERVAL, CONF_BUS_NUMBER, CONF_STOP, HORAIRE_API_URL, COORDINATES_BUS_API_URL
+from .const import (
+    DOMAIN, 
+    CONF_API_KEY, 
+    CONF_UPDATE_INTERVAL, 
+    CONF_BUS_NUMBER, 
+    CONF_STOP, 
+    HORAIRE_API_URL, 
+    COORDINATES_BUS_API_URL
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +24,8 @@ class StarCoordinator(DataUpdateCoordinator):
         self.stop = config_entry.data[CONF_STOP]
         self.direction = config_entry.data["direction_arrival_stop"]
 
-        _LOGGER.debug(f"Intervalle de mise à jour configuré : {self.update_interval_seconds} secondes")
+        _LOGGER.debug(f"Intervalle de mise à jour configuré : \
+                      {self.update_interval_seconds} secondes")
 
         super().__init__(
             hass,
@@ -27,7 +36,8 @@ class StarCoordinator(DataUpdateCoordinator):
         )
 
     async def async_update_data(self):
-        url_formatte = HORAIRE_API_URL.format(bus_number=self.bus_number, stop=self.stop, direction=self.direction, api_key=self.api_key)
+        url_formatte = HORAIRE_API_URL.format(bus_number=self.bus_number, stop=self.stop, \
+                                              direction=self.direction, api_key=self.api_key)
         _LOGGER.debug("↻ Rafraîchissement des données horaires en cours...")
 
         try:
@@ -45,12 +55,15 @@ class StarCoordinator(DataUpdateCoordinator):
                         for result in results:
                             idbus = result.get("idbus")
                             if idbus:
-                                coordinates_url = COORDINATES_BUS_API_URL.format(idbus=idbus, api_key=self.api_key)
+                                coordinates_url = COORDINATES_BUS_API_URL.format(idbus=idbus, \
+                                                                            api_key=self.api_key)
                                 _LOGGER.debug(f"Fetch next bus coordinates url: {coordinates_url}")
                                 async with session.get(coordinates_url) as coordinates_response:
                                     if coordinates_response.status == 200:
                                         coordinates_data = await coordinates_response.json()
-                                        coords = coordinates_data.get("results", [{}])[0].get("coordonnees")
+                                        coords = coordinates_data.get(
+                                            "results", [{}]
+                                            )[0].get("coordonnees")
                                         if coords:
                                             result["coordonnees"] = coords
                             else:
