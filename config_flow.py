@@ -1,5 +1,6 @@
-import aiohttp
+"""Support for STAR API."""
 import logging
+import aiohttp
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
@@ -19,10 +20,12 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Handle configuration of STAR integration."""
     VERSION = 1
 
     # Etape 1 - API + n° bus
     async def async_step_user(self, user_input=None) -> FlowResult:
+        """Get the API token and line number."""
         errors = {}
 
         if user_input is not None:
@@ -43,6 +46,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     # Etape 2 - Direction de la ligne choisie
     async def async_step_direction(self, user_input=None):
+        """Get the direction of the line."""
         errors = {}
 
         try:
@@ -97,6 +101,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     # Etape 3 - Arret + interval
     async def async_step_stop(self, user_input=None):
+        """Get the stop of the line to monitor."""
         errors = {}
 
         idparcours = self._user_data[CONF_DIRECTION]
@@ -129,7 +134,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     # Récupération des lignes pour l'étape 1
     async def _fetch_bus_lines(self) -> dict[str, str]:
-        """Retourne une liste de tuples (nomcourt, 'nomcourt - nomlong')"""
+        """Call STAR API to get all the lines."""
         async with aiohttp.ClientSession() as session:
             async with session.get(LINE_API_URL) as resp:
                 data = await resp.json()
@@ -140,7 +145,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     # Récupération des directions de la ligne choisie pour l'étape 2
     async def _fetch_directions(self, nomcourt: str) -> list[tuple[str, str]]:
-        """Retourne les directions disponibles pour une ligne."""
+        """Call STAR API to get all direction of one line."""
         _LOGGER.debug(f"Fetching directions for line: {nomcourt}")
         async with aiohttp.ClientSession() as session:
             async with session.get(DIRECTIONS_API_URL.format(ligne=nomcourt)) as resp:
@@ -157,7 +162,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     # Récupération des arrêts de la ligne choisie pour l'étape 3
     async def _fetch_stops(self, idparcours: str) -> list[str]:
-        """Retourne la liste des arrêts pour un parcours donné."""
+        """Call STAR API to get all stops of one line."""
         _LOGGER.debug(f"Fetching stops for parcours: {idparcours}")
         async with aiohttp.ClientSession() as session:
             async with session.get(ARRETS_API_URL.format(parcours=idparcours)) as resp:
