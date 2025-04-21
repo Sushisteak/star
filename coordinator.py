@@ -4,12 +4,12 @@ import async_timeout
 from datetime import timedelta
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from .const import (
-    DOMAIN, 
-    CONF_API_KEY, 
-    CONF_UPDATE_INTERVAL, 
-    CONF_BUS_NUMBER, 
-    CONF_STOP, 
-    HORAIRE_API_URL, 
+    DOMAIN,
+    CONF_API_KEY,
+    CONF_UPDATE_INTERVAL,
+    CONF_BUS_NUMBER,
+    CONF_STOP,
+    HORAIRE_API_URL,
     COORDINATES_BUS_API_URL
 )
 

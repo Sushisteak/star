@@ -4,15 +4,15 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.data_entry_flow import FlowResult
 from .const import (
-    DOMAIN, 
-    CONF_API_KEY, 
-    CONF_UPDATE_INTERVAL, 
-    DEFAULT_UPDATE_INTERVAL, 
-    CONF_BUS_NUMBER, 
-    CONF_STOP, 
-    CONF_DIRECTION, 
-    LINE_API_URL, 
-    DIRECTIONS_API_URL, 
+    DOMAIN,
+    CONF_API_KEY,
+    CONF_UPDATE_INTERVAL,
+    DEFAULT_UPDATE_INTERVAL,
+    CONF_BUS_NUMBER,
+    CONF_STOP,
+    CONF_DIRECTION,
+    LINE_API_URL,
+    DIRECTIONS_API_URL,
     ARRETS_API_URL
 )
 
@@ -137,7 +137,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     (item["nomcourt"], f'{item["nomcourt"]} - {item["nomlong"]}')
                     for item in data.get("results", [])
                 ]
-            
+
     # Récupération des directions de la ligne choisie pour l'étape 2
     async def _fetch_directions(self, nomcourt: str) -> list[tuple[str, str]]:
         """Retourne les directions disponibles pour une ligne."""
@@ -154,7 +154,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     (item["id"], item["libellelong"], item["nomarretarrivee"])
                     for item in data.get("results", [])
                 ]
-            
+
     # Récupération des arrêts de la ligne choisie pour l'étape 3
     async def _fetch_stops(self, idparcours: str) -> list[str]:
         """Retourne la liste des arrêts pour un parcours donné."""

@@ -44,11 +44,11 @@ class StarSensor(CoordinatorEntity, SensorEntity):
         bus_number = coordinator.bus_number
         stop = coordinator.stop
         direction = coordinator.direction
-        
+
         self._bus_number = slugify(bus_number)
         self._direction = slugify(direction)
         self._stop = slugify(stop)
-        
+
         # Construire un nom lisible
         suffix = "Prochain départ" if index == 0 else "Deuxième départ"
         self._attr_name = f"{bus_number} - {stop} → {direction} - {suffix}"
@@ -99,8 +99,8 @@ class StarSensor(CoordinatorEntity, SensorEntity):
             result = self.coordinator.data["results"][self.index]
             attributes["départ_brut"] = result.get("depart")
         except (IndexError, KeyError, TypeError):
-            pass 
-        
+            pass
+
         try:
             result = self.coordinator.data["results"][self.index]
             attributes["départ_brut"] = result.get("depart")
