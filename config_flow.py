@@ -51,7 +51,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         try:
             bus_number = self._user_data[CONF_BUS_NUMBER]
-            _LOGGER.debug(f"Bus selected in previous step: {bus_number}")
+            _LOGGER.debug("Bus selected in previous step: %s", bus_number)
             directions = await self._fetch_directions(bus_number)
 
             if not directions:
@@ -72,7 +72,7 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 direction_arrivals[direction_id] = arrival
 
             if user_input is not None:
-                _LOGGER.debug(f"User selected direction: {user_input}")
+                _LOGGER.debug("User selected direction: %s", user_input)
                 direction_id = user_input[CONF_DIRECTION]
 
                 self._user_data.update({
@@ -146,15 +146,15 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     # Récupération des directions de la ligne choisie pour l'étape 2
     async def _fetch_directions(self, nomcourt: str) -> list[tuple[str, str]]:
         """Call STAR API to get all direction of one line."""
-        _LOGGER.debug(f"Fetching directions for line: {nomcourt}")
+        _LOGGER.debug("Fetching directions for line: %s", nomcourt)
         async with aiohttp.ClientSession() as session:
             async with session.get(DIRECTIONS_API_URL.format(ligne=nomcourt)) as resp:
                 if resp.status != 200:
                     text = await resp.text()
-                    _LOGGER.error(f"Direction API error {resp.status}: {text}")
+                    _LOGGER.error("Direction API error %s: %s", resp.status, text)
                     return []
                 data = await resp.json()
-                _LOGGER.debug(f"Directions API result: {data}")
+                _LOGGER.debug("Directions API result: %s", data)
                 return [
                     (item["id"], item["libellelong"], item["nomarretarrivee"])
                     for item in data.get("results", [])
@@ -163,12 +163,12 @@ class StarConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     # Récupération des arrêts de la ligne choisie pour l'étape 3
     async def _fetch_stops(self, idparcours: str) -> list[str]:
         """Call STAR API to get all stops of one line."""
-        _LOGGER.debug(f"Fetching stops for parcours: {idparcours}")
+        _LOGGER.debug("Fetching stops for parcours: %s", idparcours)
         async with aiohttp.ClientSession() as session:
             async with session.get(ARRETS_API_URL.format(parcours=idparcours)) as resp:
                 if resp.status != 200:
                     text = await resp.text()
-                    _LOGGER.error(f"Stops API error {resp.status}: {text}")
+                    _LOGGER.error("Stops API error %s: %s", resp.status, text)
                     return []
                 data = await resp.json()
                 return [item["nomarret"] for item in data.get("results", [])]
