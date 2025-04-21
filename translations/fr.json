@@ -1,0 +1,47 @@
+{
+  "title": "Horaires STAR (bus)",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configuration générale",
+        "description": "Entrez votre clé API et sélectionnez la ligne de bus.",
+        "data": {
+          "api_key": "Clé API",
+          "bus_number": "Ligne"
+        },
+        "data_description": {
+          "api_key": "Clé fournie par l’API STAR pour accéder aux horaires. Se rendre sur https://data.explore.star.fr pour en obtenir une.",
+          "bus_number": "Nom de la ligne de bus (ex : C4, C5…)."
+        }
+      },
+      "direction": {
+        "title": "Choix de la direction",
+        "description": "Sélectionnez la direction du trajet souhaité.",
+        "data": {
+          "direction": "Direction"
+        },
+        "data_description": {
+          "direction": "Départ vers terminus ou direction finale du trajet."
+        }
+      },
+      "stop": {
+        "title": "Choix de l'arrêt",
+        "description": "Sélectionnez l'arrêt pour lequel vous souhaitez afficher les horaires.",
+        "data": {
+          "update_interval": "Fréquence de mise à jour (en secondes)",
+          "stop": "Arrêt"
+        },
+        "data_description": {
+          "stop": "Nom de l'arrêt de bus à surveiller.",
+          "update_interval": "Délai entre deux appels à l'API pour rafraîchir les horaires (ex : 60 secondes). Faire attention au quota de requêtes disponible sur l'API."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Impossible de se connecter à l'API.",
+      "no_directions_found": "Aucune direction trouvée pour cette ligne.",
+      "no_stops_found": "Aucun arrêt trouvé pour cette direction.",
+      "unknown": "Une erreur inconnue est survenue."
+    }
+  }
+}
